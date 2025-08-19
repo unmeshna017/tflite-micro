@@ -133,7 +133,7 @@ TfLiteStatus MulEval(TfLiteContext* context, TfLiteNode* node) {
   TfLiteEvalTensor* output =
       tflite::micro::GetEvalOutput(context, node, kMulOutputTensor);
 
-#if HIFI_VFPU
+#if defined(INCLUDE_FLOAT_OPT)
   bool need_broadcast;
   if(input1->type == kTfLiteFloat32)
   {
@@ -166,7 +166,7 @@ TfLiteStatus MulEval(TfLiteContext* context, TfLiteNode* node) {
         EvalMulQuantizedReference(context, node, data, input1, input2, output);
       break;
     case kTfLiteFloat32:
-#if HIFI_VFPU 
+#if defined(INCLUDE_FLOAT_OPT) 
       if (!need_broadcast) 
         EvalMulFloatHiFi(context, node, params, data, input1, input2, output);
       else
