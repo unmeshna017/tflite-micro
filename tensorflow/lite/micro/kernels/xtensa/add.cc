@@ -49,7 +49,7 @@ TfLiteStatus EvalAdd(TfLiteContext* context, TfLiteNode* node,
       tflite::ArithmeticParams op_params;
       SetActivationParams(data->output_activation_min_f32,
                           data->output_activation_max_f32, &op_params);
-#if HIFI_VFPU && (defined(HIFI3) || defined(HIFI4) || defined(HIFI5))
+#if defined(INCLUDE_FLOAT_OPT) && (defined(HIFI3) || defined(HIFI4) || defined(HIFI5))
       int err;
       const RuntimeShape extended_input1_shape =
           RuntimeShape::ExtendedShape(4, tflite::micro::GetTensorShape(input1));
@@ -73,7 +73,7 @@ TfLiteStatus EvalAdd(TfLiteContext* context, TfLiteNode* node,
           data->output_activation_min_f32, data->output_activation_max_f32,
           extended_output_shape.FlatSize());
       TF_LITE_ENSURE(context, err == 0);
-#else   // HIFI_VFPU && (defined(HIFI3) || defined(HIFI4) || defined(HIFI5))
+#else   // defined(INCLUDE_FLOAT_OPT) && (defined(HIFI3) || defined(HIFI4) || defined(HIFI5))
       if (data->requires_broadcast) {
         reference_ops::BroadcastAdd4DSlow(
             op_params, tflite::micro::GetTensorShape(input1),
@@ -83,7 +83,7 @@ TfLiteStatus EvalAdd(TfLiteContext* context, TfLiteNode* node,
             tflite::micro::GetTensorShape(output),
             tflite::micro::GetTensorData<float>(output));
       } else {
-#if HIFI_VFPU
+#if defined(INCLUDE_FLOAT_OPT)
         int err;
         const RuntimeShape& input1_shape = tflite::micro::GetTensorShape(input1);
         const RuntimeShape& input2_shape = tflite::micro::GetTensorShape(input2);
@@ -112,9 +112,9 @@ TfLiteStatus EvalAdd(TfLiteContext* context, TfLiteNode* node,
                            tflite::micro::GetTensorData<float>(input2),
                            tflite::micro::GetTensorShape(output),
                            tflite::micro::GetTensorData<float>(output));
-#endif // HIFI_VFPU
+#endif // defined(INCLUDE_FLOAT_OPT)
       }
-#endif  // HIFI_VFPU && (defined(HIFI3) || defined(HIFI4) || defined(HIFI5))
+#endif  // defined(INCLUDE_FLOAT_OPT) && (defined(HIFI3) || defined(HIFI4) || defined(HIFI5))
     } break;
     case kTfLiteInt32: {
       tflite::ArithmeticParams op_params;
