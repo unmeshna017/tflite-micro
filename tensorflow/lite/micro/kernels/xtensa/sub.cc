@@ -45,7 +45,7 @@ TfLiteStatus EvalSub(TfLiteContext* context, TfLiteNode* node, TfLiteSubParams* 
   tflite::ArithmeticParams op_params;
   SetActivationParams(output_activation_min, output_activation_max, &op_params);
 
-#if HIFI_VFPU && (defined(HIFI3) || defined(HIFI4) || defined(HIFI5))
+#if defined(INCLUDE_FLOAT_OPT) && (defined(HIFI3) || defined(HIFI4) || defined(HIFI5))
   const RuntimeShape extended_input1_shape =
       RuntimeShape::ExtendedShape(5, tflite::micro::GetTensorShape(input1));
   const RuntimeShape extended_input2_shape =
@@ -85,7 +85,7 @@ TfLiteStatus EvalSub(TfLiteContext* context, TfLiteNode* node, TfLiteSubParams* 
   xa_nn_vec_activation_min_max_f32_f32(
       output_data, output_data, op_params.float_activation_min,
       op_params.float_activation_max, (output_dims[0] * out_off));
-#else  // HIFI_VFPU && (defined(HIFI3) || defined(HIFI4) || defined(HIFI5))
+#else  // defined(INCLUDE_FLOAT_OPT) && (defined(HIFI3) || defined(HIFI4) || defined(HIFI5))
   if (data->requires_broadcast) {
     tflite::reference_ops::BroadcastSubSlow(
         op_params, tflite::micro::GetTensorShape(input1),

@@ -181,7 +181,7 @@ TfLiteStatus Eval(TfLiteContext* context, TfLiteNode* node) {
       tflite::micro::GetEvalOutput(context, node, kStridedSliceOutputTensor);
   switch (output->type) {
     case kTfLiteFloat32:
-#if HIFI_VFPU && (defined(HIFI3) || defined(HIFI4) || defined(HIFI5))
+#if defined(INCLUDE_FLOAT_OPT) && (defined(HIFI3) || defined(HIFI4) || defined(HIFI5))
       StridedSlice_int32_hifi(op_params, tflite::micro::GetTensorShape(input),
                                 tflite::micro::GetTensorData<int32_t>(input),
                                 tflite::micro::GetTensorShape(output),
