@@ -66,11 +66,11 @@ void TestPreluFloat(int* input_dims_data, const float* input_data,
                        output_dims_count, output_data);
 }
 
-template <typename T>
+template <typename T, typename U>
 void TestPreluQuantized(int* input_dims_data, const float* input_data,
                         T* input_quantized, const float input_scale,
                         const int input_zero_point, int* alpha_dims_data,
-                        const float* alpha_data, T* alpha_quantized,
+                        const float* alpha_data, U* alpha_quantized,
                         const float alpha_scale, const int alpha_zero_point,
                         const float* golden, T* golden_quantized,
                         const float output_scale, const int output_zero_point,
@@ -151,6 +151,36 @@ TF_LITE_MICRO_TEST(QuantizedInt8PreluActivationsOpTest) {
   float scale = 2.0 / 255.0;
   int zero_point = 0;
   int8_t output_data[dims_count];
+  tflite::testing::TestPreluQuantized(
+      input_shape, input_values, input_quantized, scale, zero_point,
+      alpha_shape, alpha_values, alpha_quantized, scale, zero_point, golden,
+      golden_quantized, scale, zero_point, output_shape, output_data);
+}
+
+TF_LITE_MICRO_TEST(QuantizedInt16PreluActivationsOpTest) {
+  int input_shape[] = {3, 2, 2, 3};
+  const float input_values[] = {
+      0.0f,   0.0f,   0.0f,    // Row 1, Column 1
+      0.5f,   0.5f,   0.5f,    // Row 1, Column 2
+      -1.0f,  -1.0f,  -1.0f,   // Row 2, Column 1
+      -0.25f, -0.25f, -0.25f,  // Row 1, Column 2
+  };
+  int alpha_shape[] = {3, 1, 1, 3};
+  const float alpha_values[] = {0.0f, 0.5f, -0.5f};
+  int output_shape[] = {3, 2, 2, 3};
+  const float golden[] = {
+      0.0f, 0.0f,    0.0f,    // Row 1, Column 1
+      0.5f, 0.5f,    0.5f,    // Row 1, Column 2
+      0.0f, -0.5f,   0.5f,    // Row 2, Column 1
+      0.0f, -0.125f, 0.125f,  // Row 1, Column 2
+  };
+  const int dims_count = 12;
+  int16_t input_quantized[dims_count];
+  int8_t alpha_quantized[3];
+  int16_t golden_quantized[dims_count];
+  float scale = 2.0 / 255.0;
+  int zero_point = 0;
+  int16_t output_data[dims_count];
   tflite::testing::TestPreluQuantized(
       input_shape, input_values, input_quantized, scale, zero_point,
       alpha_shape, alpha_values, alpha_quantized, scale, zero_point, golden,
