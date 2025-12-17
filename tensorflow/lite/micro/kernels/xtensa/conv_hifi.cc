@@ -88,9 +88,16 @@ TfLiteStatus ConvPrepareHifi(TfLiteContext* context, TfLiteNode* node) {
     // For HiFi5, with nnlib-hifi5 versions 1.7.0 onwards and for HiFi4 with nnlib-hifi4 versions 2.5.0 onwards, 
     // we use the below dilated_conv2d_std getsize() API. For the earlier versions, "output_channels" argument is not needed.
 #if defined(HIFI5) || defined(HIFI4)
+  if (input->type == kTfLiteInt8) {
     required_scratch = xa_nn_dilated_conv2d_std_getsize(
         input_height, input_depth, filter_height, filter_width, stride_height,
         pad_height, output_height, output_channels, PREC_ASYM8S, params->dilation_height_factor);
+  }
+  else if (input->type == kTfLiteInt16) {
+    required_scratch = xa_nn_dilated_conv2d_std_getsize(
+        input_height, input_depth, filter_height, filter_width, stride_height,
+        pad_height, output_height, output_channels, PREC_SYM16S, params->dilation_height_factor);
+  }
 #endif // defined(HIFI5) || defined(HIFI4)
     TF_LITE_ENSURE(context, required_scratch > 0);
   }
