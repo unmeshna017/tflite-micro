@@ -1,0 +1,37 @@
+diff --git a/algo/kernels/basic/hifi4/xa_nn_reduce_asym16s_asym16s.c b/algo/kernels/basic/hifi4/xa_nn_reduce_asym16s_asym16s.c
+index 44931fc..7c5dc5c 100644
+--- a/algo/kernels/basic/hifi4/xa_nn_reduce_asym16s_asym16s.c
++++ b/algo/kernels/basic/hifi4/xa_nn_reduce_asym16s_asym16s.c
+@@ -940,7 +940,7 @@ WORD32 xa_nn_reduce_mean_4D_asym16s_asym16s(WORD16 * __restrict__ p_out
+   {
+     current = p_axis[axis_itr];
+     XA_NNLIB_ARG_CHK_COND(((current < 0) || (current > (num_inp_dims - 1))), -1);
+-    XA_NNLIB_ARG_CHK_COND((p_inp_shape[current] > 1024), -1);
++    // XA_NNLIB_ARG_CHK_COND((p_inp_shape[current] > 1024), -1);
+ 
+     /* Avoid calculation in case of repeated axis dims*/
+     if(current != past)
+diff --git a/algo/kernels/cnn/hifi4/xa_nn_conv2d_std_sym8sxsym16s.c b/algo/kernels/cnn/hifi4/xa_nn_conv2d_std_sym8sxsym16s.c
+index bc1078e..28abf4c 100644
+--- a/algo/kernels/cnn/hifi4/xa_nn_conv2d_std_sym8sxsym16s.c
++++ b/algo/kernels/cnn/hifi4/xa_nn_conv2d_std_sym8sxsym16s.c
+@@ -778,7 +778,8 @@ WORD32 xa_nn_dilated_conv2d_std_v2_per_chan_sym8sxsym16s(
+   WORD32 out_width_over_x_r_pad = 0;
+   // Determine x-right padding
+   WORD32 x_r_pad = kernel_width_dilation + (out_width - 1) * x_stride - (x_padding + input_width);//dilation
+-  XA_NNLIB_ARG_CHK_COND((x_r_pad<0), -1);
++  x_r_pad = x_r_pad < 0 ? 0 : x_r_pad;
++  // XA_NNLIB_ARG_CHK_COND((x_r_pad<0), -1);
+   if(x_r_pad >= kernel_width_dilation)//dilation
+   {
+     out_width_over_x_r_pad = conv_x_right_pad(x_padding, input_width, x_stride, out_width, out_height, out_channels, out_channels_offset, out_width_offset, out_height_offset, p_bias, p_out, p_out_multiplier, p_out_shift, out_activation_min, out_activation_max);
+@@ -787,7 +788,8 @@ WORD32 xa_nn_dilated_conv2d_std_v2_per_chan_sym8sxsym16s(
+ 
+   // Determine y-bottom padding
+   WORD32 y_b_pad = kernel_height_dilation + (out_height - 1) * y_stride - (y_padding + input_height);
+-  XA_NNLIB_ARG_CHK_COND((y_b_pad<0), -1);
++  y_b_pad = y_b_pad < 0 ? 0 : y_b_pad;
++  // XA_NNLIB_ARG_CHK_COND((y_b_pad<0), -1);
+ 
+   XA_NNLIB_ARG_CHK_COND((kernel_height_dilation > ( y_padding + input_height + y_b_pad)), -1);//dilation
+   XA_NNLIB_ARG_CHK_COND((kernel_width_dilation  > ( x_padding + input_width  + x_r_pad)), -1);//dilation

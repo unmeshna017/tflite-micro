@@ -1,3 +1,16 @@
+diff --git a/algo/kernels/basic/hifi5/xa_nn_reduce_asym16s_asym16s.c b/algo/kernels/basic/hifi5/xa_nn_reduce_asym16s_asym16s.c
+index cd495e1..5901f56 100644
+--- a/algo/kernels/basic/hifi5/xa_nn_reduce_asym16s_asym16s.c
++++ b/algo/kernels/basic/hifi5/xa_nn_reduce_asym16s_asym16s.c
+@@ -1205,7 +1205,7 @@ WORD32 xa_nn_reduce_mean_4D_asym16s_asym16s(WORD16 * __restrict__ p_out
+   {
+     current = p_axis[axis_itr];
+     XA_NNLIB_ARG_CHK_COND(((current < 0) || (current > (num_inp_dims - 1))), -1);
+-    XA_NNLIB_ARG_CHK_COND((p_inp_shape[current] > 1024), -1);
++    // XA_NNLIB_ARG_CHK_COND((p_inp_shape[current] > 1024), -1);
+ 
+     /* Avoid calculation in case of repeated axis dims*/
+     if(current != past)
 diff --git a/algo/kernels/cnn/hifi5/xa_nn_conv2d_std_sym8sxsym16s.c b/algo/kernels/cnn/hifi5/xa_nn_conv2d_std_sym8sxsym16s.c
 index ea2e6f4..585c58f 100644
 --- a/algo/kernels/cnn/hifi5/xa_nn_conv2d_std_sym8sxsym16s.c
