@@ -1,6 +1,29 @@
 name: PR Tests
 
 on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+      tags:
+        description: 'Test scenario tags'
+        required: false
+        type: choice
+        options:
+        - 'scenario1'
+        - 'scenario2'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run a one-line script
+        run: echo "Hello, world! Log level is ${{ github.event.inputs.logLevel }}"
+
+on:
   pull_request_target:
     types:
       - synchronize
