@@ -48,6 +48,10 @@ elif [[ ${2} == "hifi5" ]]; then
   LIBRARY_URL="http://github.com/foss-xtensa/nnlib-hifi5/raw/master/archive/xa_nnlib_hifi5_09_30_2025.zip"
   LIBRARY_DIRNAME="xa_nnlib_hifi5"
   LIBRARY_MD5="f3ac445ae47143b1fddf26b85d763697"
+elif [[ ${2} == "hifi_iq" ]]; then
+  LIBRARY_URL="http://github.com/foss-xtensa/nnlib-hifi_iq/raw/main/archive/xa_nnlib_hifi_iq_09_03_2026.zip"
+  LIBRARY_DIRNAME="xa_nnlib_hifi_iq"
+  LIBRARY_MD5="050f2e27b5b68068a3b4d00a1b449013"
 elif [[ ${2} == "vision_p6" ]]; then
   LIBRARY_URL="https://github.com/foss-xtensa/tflmlib_vision/raw/main/archive/xi_tflmlib_vision_p6_22_06_29.zip"
   LIBRARY_DIRNAME="xi_tflmlib_vision_p6"
@@ -80,7 +84,7 @@ else
 
   pushd "${LIBRARY_INSTALL_PATH}" > /dev/null
   chmod -R +w ./
-  if [ "${PATCH}" ]; then
+  if [ -f "${PATCH}" ]; then
     create_git_repo ./
     apply_patch_to_folder ./ ${PATCH} "TFLM patch"
   fi
