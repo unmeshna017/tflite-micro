@@ -41,13 +41,13 @@ DOWNLOADS_DIR=${1}
 PATCH="../../ext_libs/xa_nnlib_${2}.patch"
 
 if [[ ${2} == "hifi4" ]]; then
-  LIBRARY_URL="http://github.com/foss-xtensa/nnlib-hifi4/raw/master/archive/xa_nnlib_hifi4_09_30_2025.zip"
+  LIBRARY_URL="http://github.com/foss-xtensa/nnlib-hifi4/raw/master/archive/xa_nnlib_hifi4_09_03_2026.zip"
   LIBRARY_DIRNAME="xa_nnlib_hifi4"
-  LIBRARY_MD5="a1cba57501a35d0bffdd39c536689366"
+  LIBRARY_MD5="69537cd86952b02aa6ed566d4a6f0c08"
 elif [[ ${2} == "hifi5" ]]; then
-  LIBRARY_URL="http://github.com/foss-xtensa/nnlib-hifi5/raw/master/archive/xa_nnlib_hifi5_09_30_2025.zip"
+  LIBRARY_URL="http://github.com/foss-xtensa/nnlib-hifi5/raw/master/archive/xa_nnlib_hifi5_09_03_2026.zip"
   LIBRARY_DIRNAME="xa_nnlib_hifi5"
-  LIBRARY_MD5="f3ac445ae47143b1fddf26b85d763697"
+  LIBRARY_MD5="2fbe7a4459609f257b43fb1d2cdc2339"
 elif [[ ${2} == "hifi_iq" ]]; then
   LIBRARY_URL="http://github.com/foss-xtensa/nnlib-hifi_iq/raw/main/archive/xa_nnlib_hifi_iq_09_03_2026.zip"
   LIBRARY_DIRNAME="xa_nnlib_hifi_iq"
