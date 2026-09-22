@@ -397,7 +397,7 @@ TfLiteStatus Eval(TfLiteContext* context, TfLiteNode* node) {
           tflite::micro::GetTensorData<float>(input);
       const float* filter_data =
           tflite::micro::GetTensorData<float>(filter);
-      const float* bias_data = tflite::micro::GetTensorData<float>(bias);
+      const float* bias_data = tflite::micro::GetOptionalTensorData<float>(bias);
       float* output_data = tflite::micro::GetTensorData<float>(output);
 
       const int num_elements = output_shape.FlatSize();
