@@ -325,7 +325,7 @@ TfLiteStatus DepthwiseConvEvalInt16Hifi(TfLiteContext* context, TfLiteNode* node
 #if defined(HIFI_IQ)
   if (tflite::micro::GetTensorShape(input).Dims(3) > 1 &&
       params.depth_multiplier > 1) {
-    return DepthwiseConvReferenceEvalInt8(context, node);
+    return DepthwiseConvReferenceEvalInt16(context, node);
   }
 #endif
 #ifdef USE_TFLM_COMPRESSION
