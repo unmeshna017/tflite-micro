@@ -133,8 +133,13 @@ ifeq ($(TOOLCHAIN), armclang)
 else
   CORE_OPTIMIZATION_LEVEL := -Os
 endif
-KERNEL_OPTIMIZATION_LEVEL := -O2
-THIRD_PARTY_KERNEL_OPTIMIZATION_LEVEL := -O2
+ifeq ($(BUILD_TYPE), debug)
+  KERNEL_OPTIMIZATION_LEVEL := -O0
+  THIRD_PARTY_KERNEL_OPTIMIZATION_LEVEL := -O0
+else
+  KERNEL_OPTIMIZATION_LEVEL := -O2
+  THIRD_PARTY_KERNEL_OPTIMIZATION_LEVEL := -O2
+endif
 
 # Warn if deprecated optimization level is set.
 OPTIMIZATION_LEVEL :=
@@ -440,6 +445,7 @@ $(TENSORFLOW_ROOT)tensorflow/lite/micro/kernels/reshape.cc \
 $(TENSORFLOW_ROOT)tensorflow/lite/micro/kernels/reshape_common.cc \
 $(TENSORFLOW_ROOT)tensorflow/lite/micro/kernels/resize_bilinear.cc \
 $(TENSORFLOW_ROOT)tensorflow/lite/micro/kernels/resize_nearest_neighbor.cc \
+$(TENSORFLOW_ROOT)tensorflow/lite/micro/kernels/reverse.cc \
 $(TENSORFLOW_ROOT)tensorflow/lite/micro/kernels/round.cc \
 $(TENSORFLOW_ROOT)tensorflow/lite/micro/kernels/select.cc \
 $(TENSORFLOW_ROOT)tensorflow/lite/micro/kernels/shape.cc \
